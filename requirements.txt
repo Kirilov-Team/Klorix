@@ -1,3 +1,4 @@
+wheel
 win11toast
 geopy
 folium
