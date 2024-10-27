@@ -3,6 +3,7 @@ setuptools
 win11toast
 geopy
 folium
+pyaudio
 SpeechRecognition
 pyttsx3
 pywhatkit
