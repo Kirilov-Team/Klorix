@@ -1,6 +1,23 @@
-print("Importálás...")
-from win11toast import toast
 import threading
+import time
+started = False
+start_time = 0
+
+
+def start_timer():
+    global start_time
+    while not started:
+        start_time += 0.1
+        time.sleep(0.1)
+
+
+
+t = threading.Thread(target=start_timer)
+t.start()
+
+print("[Starting] Initialization...")
+from win11toast import toast
+
 done = False
 
 
@@ -31,7 +48,6 @@ import geopy
 import folium
 import speech_recognition as sr
 import pyttsx3
-import pywhatkit
 import datetime
 import wikipedia
 import pyjokes
@@ -50,7 +66,8 @@ from playsound import playsound
 
 
 def play_sound(path):
-    playsound(path)
+    #playsound(path)
+    pass # TODO : Fix error
 
 t = threading.Thread(target=play_sound, args=("lib/start.wav",))
 t.start()
@@ -58,18 +75,14 @@ t.start()
 
 from sys import exit
 
-
-print("Kész")
-
 username = ""
 loc = ""
 
 
-print("[INDÍTÁS] Beszédfelismerés indítása...")
-
 listener = sr.Recognizer()
 listener.pause_threshold = 0.5
 
+print("Speech Recognition OK")
 
 
 engine = pyttsx3.init()
@@ -84,7 +97,7 @@ for voice in voices:
         done = True
     print("[INDÍTÁS] Hang telepítve!")
 
-
+print("Synthetic Voice OK")
 
 
 def talk(text):
@@ -112,12 +125,15 @@ except:
     t = threading.Thread(target=play_sound, args=("lib/gotit.wav",))
     t.start()
 
+print("Profile OK")
 
 llm = ChatOllama(
     model="qwen:0.5b",
     temperature=0,
     # other params...
 )
+
+print("Large Language Model OK")
 
 async def getweather():
     # declare the client. the measuring unit used defaults to the metric system (celcius, km/h, etc.)
@@ -193,6 +209,7 @@ def map_():
 def search_for(query):
     print('[GOOGLE] Rákeresés : ' + query)
     talk(f"Rákeresés a {query}re")
+    import pywhatkit
     pywhatkit.search(query)
 
 
@@ -292,7 +309,7 @@ def take_command():
             print("Nothing")
             #talk("Hiba történt!")
         except sr.RequestError:
-            talk("Hiba történt a szolgáltató elérésekor!")
+            talk("A hangfelismerés a Google szolgáltatását használja.")
             talk("Ellenőrizze a hálózati kapcsolatot!")
 
 
@@ -373,7 +390,8 @@ def run_seal():
     except:
         pass
 
-
+started = True
+print(f"Started in {start_time} seconds!")
 
 talk(f"Sikeres indítás.")
 talk(f"Elkezdhetsz beszélni.")
