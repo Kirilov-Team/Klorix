@@ -66,8 +66,9 @@ from playsound import playsound
 
 
 def play_sound(path):
-    #playsound(path)
-    pass # TODO : Fix error
+    playsound(path)
+    
+
 
 t = threading.Thread(target=play_sound, args=("lib/start.wav",))
 t.start()
