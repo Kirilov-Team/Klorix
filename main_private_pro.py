@@ -303,10 +303,10 @@ def take_command():
                     return command
                 else:
                     command = ""
-                    print("Nothing")
+                    print("A felhasználó nem beszél!")
         except sr.UnknownValueError:
             command = ""
-            print("Nothing")
+            print("Beszélj hangosabban, érthetőbben!")
             #talk("Hiba történt!")
         except sr.RequestError:
             talk("A hangfelismerés a Google szolgáltatását használja.")
