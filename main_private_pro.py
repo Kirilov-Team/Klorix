@@ -50,7 +50,7 @@ import deep_translator as dt
 import subprocess
 from langchain_ollama import ChatOllama
 from playsound import playsound
-import customtkinter
+
 
 
 
@@ -160,6 +160,8 @@ def close_u():
     subprocess.call(f"TASKKILL /F /IM QwenCore.exe", shell=True)
     exit()
 
+def generate_response(text):
+    pass
 
 
 def run_seal():
@@ -175,7 +177,6 @@ def run_seal():
             t.start()
             if True:
                 print("Generating response...")
-                push("Gondolkozom...")
                 prompt2 = dt.GoogleTranslator(source='hu', target='en').translate(command)
                 text = prompt2
                 messages = [
@@ -189,7 +190,7 @@ def run_seal():
                 result = dt.GoogleTranslator(source='en', target='hu').translate(ai_msg.content)
                 print(result)
                 talk(result)
-                print("done")
+
     except:
         pass
 
@@ -200,13 +201,10 @@ talk(f"Sikeres indítás.")
 talk(f"Elkezdhetsz beszélni.")
 
 
+while True:
+    run_seal()
 
-def start_qwencore():
-    while True:
-        run_seal()
+generating = False
 
-
-main_thread = threading.Thread(target=start_qwencore)
-main_thread.start()
 
 
