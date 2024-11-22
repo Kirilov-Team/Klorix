@@ -28,7 +28,7 @@ def push(txt):
 try:
     with open(f'lib/isInstalled', 'r') as a:
         escape = a.read()
-    t = threading.Thread(target=push, args=("QwenCore indítása...",))
+    t = threading.Thread(target=push, args=("Klorix indítása...",))
     t.start()
 except:
     t = threading.Thread(target=push, args=("Nyelvi modell letöltése...",))
@@ -103,14 +103,14 @@ try:
         escape = a.read()
 except:
     talk("Szia!")
-    talk("A Kvenkor projekt mesterséges intelligenciája vagyok!")
+    talk("Klorix vagyok!!")
     talk("Elsőnek is, köszönöm, hogy telepítettél!")
     talk("Boldog vagyok, hogy téged is megismerhetlek!")
-    talk("De elsőnek is, kérlek adj meg egy biztonsági szót, hogy tudjam, mikor kell kikapcsolnom magam!")
+    talk("Kérlek adj meg egy biztonsági szót, hogy tudjam, mikor kell kikapcsolnom magam!")
 
     t = threading.Thread(target=play_sound, args=("lib/popup.wav",))
     t.start()
-    escape = tkinter.simpledialog.askstring(title="QwenCore Interface", prompt="Ha ezt a szót kimondja bezárom magam : ")
+    escape = tkinter.simpledialog.askstring(title="Klorix Interface", prompt="Ha ezt a szót kimondja bezárom magam : ")
     with open(f'lib/escape.safeword', 'w') as a:
         a.write(escape)
     t = threading.Thread(target=play_sound, args=("lib/gotit.wav",))
