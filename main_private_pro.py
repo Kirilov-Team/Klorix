@@ -157,7 +157,7 @@ def take_command():
 def close_u():
     talk("Viszlát!")
     playsound("lib/close.wav")
-    subprocess.call(f"TASKKILL /F /IM QwenCore.exe", shell=True)
+    subprocess.call(f"TASKKILL /F /IM Klorix.exe", shell=True)
     exit()
 
 def generate_response(text):

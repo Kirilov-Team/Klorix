@@ -10,11 +10,11 @@ build_options = {'packages': ["pyttsx3", "win11toast", "tkinter.simpledialog", "
 base = 'gui'
 
 executables = [
-    Executable('dist/main_private_pro.py', base=base, target_name = 'QwenCore', icon="app.ico")
+    Executable('dist/main_private_pro.py', base=base, target_name = 'Klorix', icon="app.ico")
 ]
 
-setup(name='QwenCore',
+setup(name='Klorix',
       version = '0.0',
-      description = 'QwenCore Hungary',
+      description = 'Klorix',
       options = {'build_exe': build_options},
       executables = executables)
