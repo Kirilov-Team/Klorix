@@ -2,7 +2,7 @@ from cx_Freeze import setup, Executable
 
 # Dependencies are automatically detected, but it might need
 # fine tuning.
-build_options = {'packages': ["pyttsx3", "win11toast", "tkinter.simpledialog", "speech_recognition", "pyttsx3", "asyncio", "deep_translator", "ollama", "subprocess", "langchain_ollama", "playsound"], 'excludes': []}
+build_options = {'packages': ["pyttsx3", "win11toast", "customtkinter", "speech_recognition", "deep_translator", "playsound", "langchain_ollama", "subprocess"], 'excludes': []}
 
 
 
@@ -10,7 +10,7 @@ build_options = {'packages': ["pyttsx3", "win11toast", "tkinter.simpledialog", "
 base = 'gui'
 
 executables = [
-    Executable('dist/main_private_pro.py', base=base, target_name = 'Klorix', icon="app.ico")
+    Executable('dist/main_gui.py', base=base, target_name = 'Klorix', icon="app.ico")
 ]
 
 setup(name='Klorix',

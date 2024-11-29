@@ -4,13 +4,10 @@ import threading
 def push(txt):
     toast(txt, duration='short', audio={'silent': 'true'})
 
-
 t = threading.Thread(target=push, args=("Klorix Indítása...",))
-
 t.start()
 
 import customtkinter as ctk
-
 import speech_recognition as sr
 import pyttsx3
 import deep_translator as dt
@@ -48,14 +45,20 @@ def take_command():
 
 # Válasz generálása (fordítással és AI-val)
 def generate_response(user_input):
+    send_button.configure(state=ctk.DISABLED)
     try:
+        send_button.configure(state=ctk.DISABLED)
+        start_button.configure(state=ctk.DISABLED)
         prompt = dt.GoogleTranslator(source="hu", target="en").translate(user_input)
         messages = [("system", f"{prompt}"), ("human", f"{prompt}, short")]
         ai_msg = llm.invoke(messages)
         response = dt.GoogleTranslator(source="en", target="hu").translate(ai_msg.content)
+        send_button.configure(state=ctk.NORMAL)
         return response
     except:
+        send_button.configure(state=ctk.NORMAL)
         return "Nem sikerült választ generálni."
+
 
 # GUI visszacsatolás
 def indicate_listening():
@@ -76,12 +79,14 @@ def run_voice_command():
     listening_active = False  # Leállítjuk a hallgatást
 
     if command:
-        start_button.configure(state=ctk.DISABLED)
+
         output_box.insert(ctk.END, f"Te: {command}\n")
         if escape_word in command:
             close_application()
             start_button.configure(text="🎤 Beszédindítás")
         else:
+            send_button.configure(state=ctk.DISABLED)
+            start_button.configure(state=ctk.DISABLED)
             response = generate_response(command)
             output_box.insert(ctk.END, f"Klorix: {response}\n")
             output_box.yview(ctk.END)  # Auto-scroll to the latest output
@@ -91,6 +96,7 @@ def run_voice_command():
 
     else:
         start_button.configure(text="🎤 Beszédindítás")
+    send_button.configure(state=ctk.NORMAL)
     start_button.configure(state=ctk.NORMAL)
 
 # Kilépés a programból
@@ -106,13 +112,47 @@ def play_sound(path):
     playsound(path)
 
 # Új funkció: Válasz ismétlésének funkciója
-
 def repeat_last_response():
     global last_response
     if last_response:
-        talk(last_response)
+        t = threading.Thread(target=talk, args=(last_response,))
+        t.start()
     else:
-        talk("Még nem kaptál választ.")
+        t = threading.Thread(target=talk, args=("Még nem kaptál választ!",))
+        t.start()
+
+# Szöveges bemenet kezelése
+def handle_text_input():
+    global last_response
+
+    # Bemenet beolvasása
+    user_input = text_input.get().strip()
+    if not user_input:
+        talk("Kérlek, adj meg egy parancsot szövegesen!")
+        return
+
+    # Szöveg megjelenítése az output_box-ban és mező törlése
+    output_box.insert(ctk.END, f"Te: {user_input}\n")
+    text_input.delete(0, ctk.END)  # Töröljük az adatokat
+    output_box.yview(ctk.END)  # Auto-scroll
+    send_button.configure(state=ctk.DISABLED)
+    start_button.configure(state=ctk.DISABLED)
+
+    # Válasz generálása külön szálon
+    def generate_and_display_response():
+        if escape_word in user_input:
+            close_application()
+        else:
+            response = generate_response(user_input)
+            output_box.insert(ctk.END, f"Klorix: {response}\n")
+            output_box.yview(ctk.END)  # Auto-scroll
+            talk(response)
+            last_response = response  # Tároljuk az utolsó választ
+            send_button.configure(state=ctk.NORMAL)
+            start_button.configure(state=ctk.NORMAL)
+
+    threading.Thread(target=generate_and_display_response, daemon=True).start()
+
 
 # GUI beállítások
 ctk.set_appearance_mode("dark")  # Sötét mód bekapcsolása
@@ -162,6 +202,16 @@ start_button.grid(row=0, column=0, padx=10)
 
 exit_button = ctk.CTkButton(button_frame, text="❌ Kilépés", command=close_application)
 exit_button.grid(row=0, column=1, padx=10)
+
+# Szöveges input mező és gomb
+text_input_frame = ctk.CTkFrame(root)
+text_input_frame.pack(fill="x", padx=10, pady=10)
+
+text_input = ctk.CTkEntry(text_input_frame, placeholder_text="Írj be egy parancsot...", width=400)
+text_input.grid(row=0, column=0, padx=10)
+
+send_button = ctk.CTkButton(text_input_frame, text="📩 Küldés", command=handle_text_input)
+send_button.grid(row=0, column=1, padx=10)
 
 # Kezdeti üdvözlés
 output_box.insert(ctk.END, "Klorix: Üdvözlöm!\n")
