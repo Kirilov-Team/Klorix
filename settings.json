@@ -1,0 +1,6 @@
+{
+    "enable_feature": false,
+    "auto_refresh": true,
+    "timeout": 1,
+    "default_model": "llama3.2:1b"
+}
