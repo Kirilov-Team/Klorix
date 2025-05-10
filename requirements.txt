@@ -17,4 +17,5 @@ asyncio
 deep_translator
 ollama
 langchain_ollama
+customtkinter
 playsound
